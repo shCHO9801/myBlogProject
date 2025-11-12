@@ -35,3 +35,8 @@ out/
 
 ### VS Code ###
 .vscode/
+.env
+1.env
+
+# QueryDSL generated
+/src/main/generated/
