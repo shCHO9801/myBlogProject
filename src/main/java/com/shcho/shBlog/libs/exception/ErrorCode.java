@@ -11,6 +11,7 @@ public enum ErrorCode {
 
     /* 404 NOT_FOUND */
     USER_NOT_FOUND(404, "USER_001", "유저를 찾을 수 없습니다."),
+    ALREADY_DELETED_USER(404, "USER_002", "이미 삭제된 유저입니다."),
 
     /* 401 UNAUTHORIZED */
 
