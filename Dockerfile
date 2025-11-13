@@ -1,5 +1,5 @@
 # Java 17 slim 이미지 사용
-FROM openjdk:17-jdk-slim
+FROM eclipse-temurin:17-jdk-alpine
 
 # JAR 파일을 컨테이너에 복사
 ARG JAR_FILE=app.jar
