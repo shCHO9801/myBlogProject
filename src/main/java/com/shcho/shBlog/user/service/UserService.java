@@ -1,6 +1,8 @@
 package com.shcho.shBlog.user.service;
 
+import com.shcho.shBlog.common.util.JwtProvider;
 import com.shcho.shBlog.libs.exception.CustomException;
+import com.shcho.shBlog.user.dto.UserSignInRequestDto;
 import com.shcho.shBlog.user.dto.UserSignUpRequestDto;
 import com.shcho.shBlog.user.entity.User;
 import com.shcho.shBlog.user.repository.UserRepository;
@@ -17,6 +19,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtProvider jwtProvider;
 
     @Transactional
     public User signUpUser(UserSignUpRequestDto dto) {
@@ -42,6 +45,30 @@ public class UserService {
         );
 
         return userRepository.save(signUpUser);
+    }
+
+    public User signInUser(
+            UserSignInRequestDto requestDto
+    ) {
+        String username = requestDto.username();
+        String rawPassword = requestDto.password();
+
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new CustomException(INVALID_USERNAME_OR_PASSWORD));
+
+        if (user.isDeleted()) {
+            throw new CustomException(USER_NOT_FOUND);
+        }
+
+        if (!passwordEncoder.matches(rawPassword, user.getPassword())) {
+            throw new CustomException(INVALID_USERNAME_OR_PASSWORD);
+        }
+
+        return user;
+    }
+
+    public String getUserToken(User user) {
+        return jwtProvider.createToken(user.getUsername(), user.getRole());
     }
 
     private boolean existsByUsername(String username) {
