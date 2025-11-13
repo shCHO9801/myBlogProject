@@ -1,6 +1,7 @@
 package com.shcho.shBlog.user.service;
 
 import com.shcho.shBlog.libs.exception.CustomException;
+import com.shcho.shBlog.user.dto.UserSignInRequestDto;
 import com.shcho.shBlog.user.dto.UserSignUpRequestDto;
 import com.shcho.shBlog.user.entity.User;
 import com.shcho.shBlog.user.repository.UserRepository;
@@ -12,7 +13,10 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.Optional;
+
 import static com.shcho.shBlog.libs.exception.ErrorCode.*;
+import static com.shcho.shBlog.user.entity.Role.USER;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -113,5 +117,90 @@ class UserServiceTest {
 
     private UserSignUpRequestDto createTestRequest() {
         return new UserSignUpRequestDto("newUser", "password", "newNickname", "new@email.com");
+    }
+
+    @Test
+    @DisplayName("로그인 성공")
+    void signInUserSuccess() {
+        // given
+        String rawPassword = "wrongPassword";
+
+        User user = User.builder()
+                .username("existsUsername")
+                .nickname("test")
+                .email("test@email.com")
+                .password("encodedPassword")
+                .role(USER)
+                .build();
+
+        UserSignInRequestDto requestDto =
+                createSignInRequest(user.getUsername(), rawPassword);
+
+        when(userRepository.findByUsername(requestDto.username()))
+                .thenReturn(Optional.of(user));
+
+        when(passwordEncoder.matches(rawPassword, user.getPassword()))
+                .thenReturn(true);
+
+        // when
+        User signinUser = userService.signInUser(requestDto);
+
+        // then
+        assertEquals(signinUser.getUsername(), user.getUsername());
+        assertEquals(signinUser.getNickname(), user.getNickname());
+        assertEquals(signinUser.getEmail(), user.getEmail());
+        assertEquals(signinUser.getPassword(), user.getPassword());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 - 존재하지 않는 유저")
+    void signInUserFailedInvalidUsername() {
+        // given
+        UserSignInRequestDto signInRequest =
+                createSignInRequest("wrongUsername", "password");
+
+        when(userRepository.findByUsername("wrongUsername"))
+                .thenReturn(Optional.empty());
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> userService.signInUser(signInRequest));
+
+        assertEquals(INVALID_USERNAME_OR_PASSWORD, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("로그인 실패 - 패스워드 불일치")
+    void signInUserFailedInvalidPassword() {
+        // given
+        String rawPassword = "wrongPassword";
+
+        User user = User.builder()
+                .username("existsUsername")
+                .nickname("test")
+                .email("test@email.com")
+                .password("encodedPassword")
+                .role(USER)
+                .build();
+
+        UserSignInRequestDto signInRequest =
+                createSignInRequest(user.getUsername(), rawPassword);
+
+        when(userRepository.existsByUsername(signInRequest.username()))
+                .thenReturn(true);
+        when(userRepository.findByUsername(signInRequest.username()))
+                .thenReturn(Optional.of(user));
+        when(passwordEncoder.matches(rawPassword, user.getPassword()))
+                .thenReturn(false);
+
+        // when & then
+        CustomException exception = assertThrows(CustomException.class,
+                () -> userService.signInUser(signInRequest));
+
+        assertEquals(INVALID_USERNAME_OR_PASSWORD, exception.getErrorCode());
+    }
+
+    private UserSignInRequestDto createSignInRequest(String username, String password) {
+        return new UserSignInRequestDto(username, password);
     }
 }
