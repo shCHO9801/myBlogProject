@@ -34,6 +34,7 @@ public class BlogPage extends BaseEntity {
         return BlogPage.builder()
                 .title(user.getNickname() + "의 블로그")
                 .intro("")
+                .bannerImageUrl(null)
                 .user(user)
                 .build();
     }
