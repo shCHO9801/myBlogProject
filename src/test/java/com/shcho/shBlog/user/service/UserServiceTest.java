@@ -17,8 +17,7 @@ import java.util.Optional;
 
 import static com.shcho.shBlog.libs.exception.ErrorCode.*;
 import static com.shcho.shBlog.user.entity.Role.USER;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DisplayName("User Service Unit Test")
@@ -198,6 +197,32 @@ class UserServiceTest {
                 () -> userService.signInUser(signInRequest));
 
         assertEquals(INVALID_USERNAME_OR_PASSWORD, exception.getErrorCode());
+    }
+
+    @Test
+    @DisplayName("회원가입 시 BlogPage 자동 생성")
+    void signUpUserCreatesBlogPage() {
+        // given
+        UserSignUpRequestDto requestDto = createTestRequest();
+
+        when(userRepository.existsByUsername(requestDto.username())).thenReturn(false);
+        when(userRepository.existsByNickname(requestDto.nickname())).thenReturn(false);
+        when(userRepository.existsByEmail(requestDto.email())).thenReturn(false);
+        when(passwordEncoder.encode(requestDto.password())).thenReturn("encodedPassword");
+
+        // when
+        userService.signUpUser(requestDto);
+
+        // then
+        ArgumentCaptor<User> userCaptor = ArgumentCaptor.forClass(User.class);
+        verify(userRepository).save(userCaptor.capture());
+
+        User savedUser = userCaptor.getValue();
+
+        assertNotNull(savedUser.getBlogPage());
+        assertEquals(savedUser, savedUser.getBlogPage().getUser());
+        assertEquals(savedUser.getNickname() + "의 블로그", savedUser.getBlogPage().getTitle());
+
     }
 
     private UserSignInRequestDto createSignInRequest(String username, String password) {
