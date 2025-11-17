@@ -1,5 +1,6 @@
 package com.shcho.shBlog.user.entity;
 
+import com.shcho.shBlog.blogpage.entity.BlogPage;
 import com.shcho.shBlog.common.entity.BaseEntity;
 import com.shcho.shBlog.libs.exception.CustomException;
 import jakarta.persistence.*;
@@ -42,6 +43,9 @@ public class User extends BaseEntity {
     @Column(nullable = false, columnDefinition = "VARCHAR(50)")
     private Role role;
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private BlogPage blogPage;
+
     @Column
     private LocalDateTime deletedAt;
 
@@ -53,6 +57,10 @@ public class User extends BaseEntity {
                 .email(email)
                 .role(Role.USER)
                 .build();
+    }
+
+    public void setBlogPage(BlogPage blogPage) {
+        this.blogPage = blogPage;
     }
 
     public void updateUsername(String username) {
