@@ -12,6 +12,7 @@ public enum ErrorCode {
     /* 404 NOT_FOUND */
     USER_NOT_FOUND(404, "USER_001", "유저를 찾을 수 없습니다."),
     ALREADY_DELETED_USER(404, "USER_002", "이미 삭제된 유저입니다."),
+    BLOG_PAGE_NOT_FOUND(404, "BLOG_PAGE_001", "해당 블로그 페이지를 찾을 수 없습니다."),
 
     /* 401 UNAUTHORIZED */
     INVALID_USERNAME_OR_PASSWORD(401, "AUTH_001", "아이디 또는 비밀번호가 올바르지 않습니다."),
