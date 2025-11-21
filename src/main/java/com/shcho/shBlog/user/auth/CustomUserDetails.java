@@ -9,6 +9,9 @@ import java.util.Collections;
 
 public record CustomUserDetails(User user) implements UserDetails {
 
+    public Long getUserId() {
+        return user.getUserId();
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

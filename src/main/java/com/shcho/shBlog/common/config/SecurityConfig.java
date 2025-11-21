@@ -40,6 +40,9 @@ public class SecurityConfig {
                                 "/swagger-ui.html"
                         ).permitAll()
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/blog/page/me").authenticated()
+                        .requestMatchers("/api/blog/page/**").permitAll()
+
                         // 그 외 경로는 인증 필요
                         .anyRequest().authenticated()
                 )
