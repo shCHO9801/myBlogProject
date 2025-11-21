@@ -4,7 +4,6 @@ import com.shcho.shBlog.blogpage.dto.BlogPageResponseDto;
 import com.shcho.shBlog.blogpage.entity.BlogPage;
 import com.shcho.shBlog.blogpage.service.BlogPageService;
 import com.shcho.shBlog.user.auth.CustomUserDetails;
-import com.shcho.shBlog.user.entity.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
