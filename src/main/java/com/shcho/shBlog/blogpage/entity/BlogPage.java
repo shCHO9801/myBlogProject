@@ -38,4 +38,16 @@ public class BlogPage extends BaseEntity {
                 .user(user)
                 .build();
     }
+
+    public void setTitle(String title){
+        this.title = title;
+    }
+
+    public void setIntro(String intro){
+        this.intro = intro;
+    }
+
+    public void setBannerImageUrl(String bannerImageUrl){
+        this.bannerImageUrl = bannerImageUrl;
+    }
 }

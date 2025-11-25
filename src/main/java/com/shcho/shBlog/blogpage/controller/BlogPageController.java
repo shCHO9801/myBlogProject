@@ -1,16 +1,15 @@
 package com.shcho.shBlog.blogpage.controller;
 
 import com.shcho.shBlog.blogpage.dto.BlogPageResponseDto;
+import com.shcho.shBlog.blogpage.dto.BlogPageUpdateRequestDto;
 import com.shcho.shBlog.blogpage.entity.BlogPage;
 import com.shcho.shBlog.blogpage.service.BlogPageService;
 import com.shcho.shBlog.user.auth.CustomUserDetails;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/blog/page")
@@ -35,5 +34,17 @@ public class BlogPageController {
         BlogPage blogPage = blogPageService.getBlogPageById(userId);
 
         return ResponseEntity.ok(BlogPageResponseDto.from(blogPage));
+    }
+
+    @PutMapping("/me")
+    public ResponseEntity<BlogPageResponseDto> updateBlogPage(
+            @AuthenticationPrincipal CustomUserDetails userDetails,
+            @Valid @RequestBody BlogPageUpdateRequestDto requestDto
+    ){
+        BlogPage updatedBlogPage = blogPageService.updateMyBlogPage(
+                        userDetails.getUserId(), requestDto
+                );
+
+        return ResponseEntity.ok(BlogPageResponseDto.from(updatedBlogPage));
     }
 }
