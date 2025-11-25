@@ -18,6 +18,7 @@ public enum ErrorCode {
     INVALID_USERNAME_OR_PASSWORD(401, "AUTH_001", "아이디 또는 비밀번호가 올바르지 않습니다."),
 
     /* 403 FORBIDDEN */
+    NO_PERMISSION(403, "COMMON_403", "해당 작업을 할 권한이 없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATED_USERNAME(409, "USER_003", "이미 사용중인 아이디 입니다."),
