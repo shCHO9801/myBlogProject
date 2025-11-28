@@ -3,10 +3,10 @@ package com.shcho.shBlog.category.controller;
 import com.shcho.shBlog.category.dto.CategoryResponseDto;
 import com.shcho.shBlog.category.dto.CreateCategoryRequestDto;
 import com.shcho.shBlog.category.dto.CreateCategoryResponseDto;
+import com.shcho.shBlog.category.dto.UpdateCategoryRequestDto;
 import com.shcho.shBlog.category.entity.Category;
 import com.shcho.shBlog.category.service.CategoryService;
 import com.shcho.shBlog.user.auth.CustomUserDetails;
-import com.shcho.shBlog.user.entity.User;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -49,7 +49,7 @@ public class CategoryController {
     public ResponseEntity<CategoryResponseDto> updateCategory(
             @AuthenticationPrincipal CustomUserDetails userDetails,
             @PathVariable Long categoryId,
-            @Valid @RequestBody CreateCategoryRequestDto requestDto
+            @Valid @RequestBody UpdateCategoryRequestDto requestDto
     ) {
         Long userId = userDetails.getUserId();
         Category updatedCategory =

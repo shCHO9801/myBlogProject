@@ -3,6 +3,7 @@ package com.shcho.shBlog.category.service;
 import com.shcho.shBlog.blogpage.entity.BlogPage;
 import com.shcho.shBlog.blogpage.repository.BlogPageRepository;
 import com.shcho.shBlog.category.dto.CreateCategoryRequestDto;
+import com.shcho.shBlog.category.dto.UpdateCategoryRequestDto;
 import com.shcho.shBlog.category.entity.Category;
 import com.shcho.shBlog.category.repository.CategoryRepository;
 import com.shcho.shBlog.libs.exception.CustomException;
@@ -41,7 +42,7 @@ public class CategoryService {
     }
 
     @Transactional
-    public Category updateCategory(Long userId, Long categoryId, CreateCategoryRequestDto requestDto) {
+    public Category updateCategory(Long userId, Long categoryId, UpdateCategoryRequestDto requestDto) {
 
         BlogPage userBlogPage = getBlogPageByUserId(userId);
         Category category = findCategoryById(categoryId);
