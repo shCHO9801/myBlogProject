@@ -13,17 +13,20 @@ public enum ErrorCode {
     USER_NOT_FOUND(404, "USER_001", "유저를 찾을 수 없습니다."),
     ALREADY_DELETED_USER(404, "USER_002", "이미 삭제된 유저입니다."),
     BLOG_PAGE_NOT_FOUND(404, "BLOG_PAGE_001", "해당 블로그 페이지를 찾을 수 없습니다."),
+    CATEGORY_NOT_FOUND(404, "CATEGORY_002", "카테고리를 찾을 수 없습니다."),
 
     /* 401 UNAUTHORIZED */
     INVALID_USERNAME_OR_PASSWORD(401, "AUTH_001", "아이디 또는 비밀번호가 올바르지 않습니다."),
 
     /* 403 FORBIDDEN */
     NO_PERMISSION(403, "COMMON_403", "해당 작업을 할 권한이 없습니다."),
+    FORBIDDEN_CATEGORY(403, "CATEGORY_003", "해당 카테고리에 대한 권한이 없습니다."),
 
     /* 409 CONFLICT */
     DUPLICATED_USERNAME(409, "USER_003", "이미 사용중인 아이디 입니다."),
     DUPLICATED_EMAIL(409, "USER_004", "이미 사용중인 이메일 입니다."),
     DUPLICATED_NICKNAME(409, "USER_005", "이미 사용중인 닉네임 입니다."),
+    DUPLICATED_CATEGORY_NAME(409, "CATEGORY_001", "이미 사용 중인 카테고리명입니다." ),
 
     /* 500 INTERNAL_SERVER_ERROR */
     INTERNAL_SERVER_ERROR(500, "COMMON_500", "서버 오류가 발생했습니다."),
